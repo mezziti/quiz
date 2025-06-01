@@ -7,9 +7,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import type { ChatMessage, Question, Quiz } from '@/types/quiz';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { Bot, Loader2, Send, Sparkles, User } from 'lucide-react';
+import type { ChatMessage } from '@/types/quiz';
+import { Head, useForm } from '@inertiajs/react';
+import { Bot, Loader2, Sparkles, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { quizTestData } from './quizTest';
 
@@ -35,8 +35,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function CreateQuiz() {
-
-
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -47,14 +45,12 @@ export default function CreateQuiz() {
     const [selectedLanguage, setSelectedLanguage] = useState('french');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-
     const { data, setData, post } = useForm({
         title: quizTestData.title,
         topic: selectedTopic,
         difficulty: selectedDifficulty,
         questions: quizTestData.questions,
     });
-
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -224,7 +220,6 @@ export default function CreateQuiz() {
         }
     };
 
-
     const handleQuizFormSubmit = async () => {
         if (!selectedTopic.trim() || !selectedDifficulty) return;
 
@@ -243,7 +238,7 @@ export default function CreateQuiz() {
         setMessages([userMessage]);
 
         try {
-            const { quiz, questions } = await generateQuiz({},selectedTopic, selectedDifficulty, selectedQuestionCount, selectedLanguage);
+            const { quiz, questions } = await generateQuiz({}, selectedTopic, selectedDifficulty, selectedQuestionCount, selectedLanguage);
 
             const assistantMessage: ChatMessage = {
                 id: (Date.now() + 1).toString(),
@@ -270,29 +265,28 @@ export default function CreateQuiz() {
     };
 
     const handleChatSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() || loading) return
+        e.preventDefault();
+        if (!input.trim() || loading) return;
 
-    const userMessage: ChatMessage = {
-      id: Date.now().toString(),
-      role: "user",
-      content: input,
-      timestamp: new Date(),
-    }
+        const userMessage: ChatMessage = {
+            id: Date.now().toString(),
+            role: 'user',
+            content: input,
+            timestamp: new Date(),
+        };
 
-    setMessages((prev) => [...prev, userMessage])
-    setInput("")
+        setMessages((prev) => [...prev, userMessage]);
+        setInput('');
 
-    const assistantMessage: ChatMessage = {
-      id: (Date.now() + 1).toString(),
-      role: "assistant",
-      content:
-        "I'd be happy to help! Please use the quiz form above to create a new quiz, or check your dashboard to review previous quizzes.",
-      timestamp: new Date(),
-    }
+        const assistantMessage: ChatMessage = {
+            id: (Date.now() + 1).toString(),
+            role: 'assistant',
+            content: "I'd be happy to help! Please use the quiz form above to create a new quiz, or check your dashboard to review previous quizzes.",
+            timestamp: new Date(),
+        };
 
-    setMessages((prev) => [...prev, assistantMessage])
-  }
+        setMessages((prev) => [...prev, assistantMessage]);
+    };
 
     const resetForm = () => {
         setShowQuizForm(true);
@@ -307,7 +301,6 @@ export default function CreateQuiz() {
         e.preventDefault();
         post(route('quizzes.store'), data);
     };
-    
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -399,7 +392,7 @@ export default function CreateQuiz() {
                                     <Button
                                         onClick={handleQuizFormSubmit}
                                         disabled={!selectedTopic.trim() || !selectedDifficulty || loading}
-                                        className="w-full px-8 py-3 text-lg text-white hover: sm:w-auto"
+                                        className="hover: w-full px-8 py-3 text-lg text-white sm:w-auto"
                                         size="lg"
                                     >
                                         {loading ? (
@@ -451,9 +444,7 @@ export default function CreateQuiz() {
                                                         </p>
                                                         <div className="space-y-2">
                                                             <form onSubmit={submit}>
-                                                            <Button className="w-full">
-                                                                Start Quiz
-                                                            </Button>
+                                                                <Button className="w-full">Start Quiz</Button>
                                                             </form>
                                                             <Button variant="outline" onClick={resetForm} className="w-full">
                                                                 Create Another Quiz
@@ -472,9 +463,7 @@ export default function CreateQuiz() {
                     )}
 
                     {/* Chat Input (only show if quiz form is hidden) */}
-                    {!showQuizForm && messages.length==1 && (
-                        <Loader2 className="absolute top-1/2 left-1/2 h-6 w-6 animate-spin text-gray-500" />
-                    )}
+                    {!showQuizForm && messages.length == 1 && <Loader2 className="mr-3 h-8 w-8 animate-spin text-blue-600" />}
                 </div>
             </div>
         </AppLayout>
