@@ -10,8 +10,8 @@ import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
 import { Brain, Calculator, CheckCircle, Loader2, XCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
-
+import { useState } from 'react';
+import { toast } from "sonner"
 
 function MathRendererFunction({ content }: { content: string }) {
     // Convert LaTeX to a more readable format for display
@@ -216,6 +216,7 @@ export default function StartQuiz({ quiz, auth }) {
                 _token: props.csrf_token,
                 analysis: analysisR,
             });
+            toast.success("Analysis completed.")
         } catch (error) {
             console.error('Error analyzing quiz:', error);
         } finally {

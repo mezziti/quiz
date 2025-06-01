@@ -13,6 +13,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $recentQuizzes = Quiz::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
         $totalQuizzes = Quiz::where('user_id', Auth::id())->count();
         $completedQuizzes = Quiz::where('user_id', Auth::id())
             ->where('completed', true)
@@ -26,6 +30,7 @@ class DashboardController extends Controller
         : 0;
         
         return Inertia('dashboard', [
+            'quizzes' => $recentQuizzes,
             'totalQuizzes' => $totalQuizzes,
             'completedQuizzes' => $completedQuizzes,
             'totalQuestions' => $totalQuestions,

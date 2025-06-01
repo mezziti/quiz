@@ -11,10 +11,7 @@ import type { ChatMessage, Question, Quiz } from '@/types/quiz';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Bot, Loader2, Send, Sparkles, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { router } from '@inertiajs/react';
 import { quizTestData } from './quizTest';
-import renderMathInElement from 'katex/contrib/auto-render';
-import 'katex/dist/katex.min.css';
 
 const difficulties = [
     { value: '1eme annees college', label: '1AC' },
@@ -272,6 +269,31 @@ export default function CreateQuiz() {
         }
     };
 
+    const handleChatSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!input.trim() || loading) return
+
+    const userMessage: ChatMessage = {
+      id: Date.now().toString(),
+      role: "user",
+      content: input,
+      timestamp: new Date(),
+    }
+
+    setMessages((prev) => [...prev, userMessage])
+    setInput("")
+
+    const assistantMessage: ChatMessage = {
+      id: (Date.now() + 1).toString(),
+      role: "assistant",
+      content:
+        "I'd be happy to help! Please use the quiz form above to create a new quiz, or check your dashboard to review previous quizzes.",
+      timestamp: new Date(),
+    }
+
+    setMessages((prev) => [...prev, assistantMessage])
+  }
+
     const resetForm = () => {
         setShowQuizForm(true);
         setMessages([]);
@@ -297,8 +319,8 @@ export default function CreateQuiz() {
                         <div className="mb-6">
                             <div className="text-center">
                                 <div className="mb-2 flex items-center justify-center space-x-2">
-                                    <Sparkles className="h-6 w-6" />
-                                    <div className="text-2xl font-bold">MathQuiz AI</div>
+                                    <Sparkles className="h-6 w-6 text-blue-600" />
+                                    <div className="text-2xl font-bold text-blue-600">QuizAI</div>
                                 </div>
                             </div>
 
@@ -402,7 +424,7 @@ export default function CreateQuiz() {
                                     <div className={`flex max-w-3xl space-x-3 ${message.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
                                         <div
                                             className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${
-                                                message.role === 'user' ? 'bg-blue-600' : 'bg-gray-600'
+                                                message.role === 'user' ? 'bg-sky-600' : 'bg-gray-600'
                                             }`}
                                         >
                                             {message.role === 'user' ? (
@@ -411,7 +433,7 @@ export default function CreateQuiz() {
                                                 <Bot className="h-4 w-4 text-white" />
                                             )}
                                         </div>
-                                        <Card className={`${message.role === 'user' ? 'bg-blue-600 text-white' : 'bg-white'}`}>
+                                        <Card className={`${message.role === 'user' ? 'bg-sky-600 text-white' : 'bg-white'}`}>
                                             <CardContent className="p-4">
                                                 <div className="whitespace-pre-wrap">{message.content}</div>
 
@@ -450,23 +472,8 @@ export default function CreateQuiz() {
                     )}
 
                     {/* Chat Input (only show if quiz form is hidden) */}
-                    {!showQuizForm && (
-                        <Card>
-                            <CardContent className="p-4">
-                                <form onSubmit={handleChatSubmit} className="flex space-x-4">
-                                    <Input
-                                        value={input}
-                                        onChange={(e) => setInput(e.target.value)}
-                                        placeholder="Ask me anything about math or quizzes..."
-                                        className="flex-1"
-                                        disabled={loading}
-                                    />
-                                    <Button type="submit" disabled={loading || !input.trim()}>
-                                        <Send className="h-4 w-4" />
-                                    </Button>
-                                </form>
-                            </CardContent>
-                        </Card>
+                    {!showQuizForm && messages.length==1 && (
+                        <Loader2 className="absolute top-1/2 left-1/2 h-6 w-6 animate-spin text-gray-500" />
                     )}
                 </div>
             </div>

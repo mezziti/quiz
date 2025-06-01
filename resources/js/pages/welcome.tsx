@@ -1,237 +1,133 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
-import { Award, BarChart2, BookOpen } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Link } from '@inertiajs/react';
+import { Brain, Calculator, Sparkles, TrendingUp, Users } from 'lucide-react';
 
-export default function Home() {
-  return (
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center justify-between mx-auto px-4">
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <BookOpen className="h-6 w-6 text-emerald-500" />
-              <span className="font-bold">MathMentor</span>
-            </Link>
-            <nav className="ml-6 flex items-center space-x-6 text-sm font-medium">
-              <Link href="/dashboard" className="transition-colors hover:text-foreground/80">
-                Dashboard
-              </Link>
-              <Link href="/tests" className="transition-colors hover:text-foreground/80">
-                Tests
-              </Link>
-              <Link href="/progress" className="transition-colors hover:text-foreground/80">
-                Progress
-              </Link>
-              <Link href="/resources" className="transition-colors hover:text-foreground/80">
-                Resources
-              </Link>
-            </nav>
-          </div>
-          <Button asChild variant="outline">
-            <Link href="/dashboard">Dashboard</Link>
-          </Button>
-        </div>
-      </header>
-      <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-emerald-50 to-white dark:from-emerald-950/30 dark:to-background">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:justify-between lg:text-left">
-              <div className="flex flex-col items-center lg:items-start space-y-4 max-w-2xl">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Master Math with Personalized Learning
-                  </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Take diagnostic tests, identify your strengths and weaknesses, and get personalized recommendations
-                    to improve your math skills.
-                  </p>
+export default function HomePage({ auth }) {
+    const user = auth.user;
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+            {/* Header */}
+            <header className="border-b bg-white/80 backdrop-blur-sm">
+                <div className="container mx-auto flex items-center justify-between px-4 py-4">
+                    <div className="flex items-center space-x-2">
+                        <Sparkles className="h-6 w-6 text-blue-600" />
+                        <span className="text-2xl font-bold text-blue-600">QuizAI</span>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                        {user ? (
+                            <>
+                                <Button asChild>
+                                    <Link href="/quizzes/create">New Quiz</Link>
+                                </Button>
+
+                                <Button asChild variant="outline">
+                                    <Link href="/dashboard">Dashboard</Link>
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button asChild variant="outline">
+                                    <Link href="/login">Login</Link>
+                                </Button>
+
+                                <Button asChild>
+                                    <Link href="/register">Sign Up</Link>
+                                </Button>
+                            </>
+                        )}
+                    </div>
                 </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button asChild size="lg" className="bg-emerald-600 hover:bg-emerald-700">
-                    <Link href="/tests/new">Start New Test</Link>
-                  </Button>
-                  <Button asChild variant="outline" size="lg">
-                    <Link href="/dashboard">View Dashboard</Link>
-                  </Button>
+            </header>
+
+            {/* Hero Section */}
+            <section className="container mx-auto px-4 py-20 text-center">
+                <div className="mx-auto max-w-4xl">
+                    <h1 className="mb-6 text-5xl font-bold text-gray-900">
+                        AI-Powered Math Quizzes
+                        <span className="text-blue-600"> Tailored for You</span>
+                    </h1>
+                    <p className="mx-auto mb-8 max-w-2xl text-xl text-gray-600">
+                        Generate personalized math quizzes on any topic and difficulty level using DeepSeek V3 AI. Track your progress, learn from
+                        explanations, and master mathematics with cutting-edge AI technology.
+                    </p>
+                    {user ? (
+                        <Button asChild size="lg" className="px-8 py-3 text-lg">
+                            <Link href="/quizzes/create">Create New Quiz</Link>
+                        </Button>
+                    ) : (
+                        <Button asChild size="lg" className="px-8 py-3 text-lg">
+                            <Link href="/register">Start Learning Now</Link>
+                        </Button>
+                    )}
                 </div>
-              </div>
-              <img
-                src="https://kzmopvzca31tl1n29yzd.lite.vusercontent.net/placeholder.svg?height=550&width=800"
-                width={550}
-                height={550}
-                alt="Hero Image"
-                className="mt-8 lg:mt-0 mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:w-auto"
-              />
-            </div>
-          </div>
-        </section>
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="flex flex-col items-center text-center">
-              <div className="space-y-2 max-w-3xl">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">How It Works</h2>
-                <p className="text-muted-foreground md:text-xl/relaxed">
-                  Our platform uses AI to identify your math strengths and weaknesses, then provides personalized
-                  recommendations.
-                </p>
-              </div>
-            </div>
-            <div className="mt-12 grid justify-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <Card className="w-full max-w-sm mx-auto">
-                <CardHeader className="items-center text-center pb-2">
-                  <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-800/20">
-                    <BookOpen className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                  <CardTitle>Take a Test</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-sm text-muted-foreground">
-                    Complete a 10-15 question diagnostic test covering key math concepts for your grade level.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="w-full max-w-sm mx-auto">
-                <CardHeader className="items-center text-center pb-2">
-                  <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-800/20">
-                    <BarChart2 className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                  <CardTitle>Get Analysis</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-sm text-muted-foreground">
-                    Our AI analyzes your answers to identify patterns, strengths, and areas that need improvement.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="w-full max-w-sm mx-auto sm:col-span-2 lg:col-span-1">
-                <CardHeader className="items-center text-center pb-2">
-                  <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-800/20">
-                    <Award className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                  <CardTitle>Improve Skills</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-sm text-muted-foreground">
-                    Follow personalized recommendations and practice exercises to strengthen your math skills.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="flex flex-col items-center text-center">
-              <div className="space-y-2 max-w-3xl">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Key Features</h2>
-                <p className="text-muted-foreground md:text-xl/relaxed">
-                  Designed to help middle school students master math concepts with personalized learning.
-                </p>
-              </div>
-            </div>
-            <div className="mt-12 grid justify-center gap-6 sm:grid-cols-2">
-              <Card className="w-full max-w-md mx-auto">
-                <CardHeader className="text-center">
-                  <CardTitle>Personalized Diagnostic Tests</CardTitle>
-                  <CardDescription>Grade-appropriate math quizzes with mixed question types</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Multiple-choice questions</li>
-                    <li>Short answer problems</li>
-                    <li>Complex problem-solving</li>
-                    <li>Covers fractions, decimals, algebra, geometry, and arithmetic</li>
-                  </ul>
-                </CardContent>
-              </Card>
-              <Card className="w-full max-w-md mx-auto">
-                <CardHeader className="text-center">
-                  <CardTitle>AI-Powered Analysis</CardTitle>
-                  <CardDescription>Detailed evaluation of your math skills</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Identifies computational mistakes</li>
-                    <li>Detects conceptual gaps</li>
-                    <li>Generates comprehensive diagnostic reports</li>
-                    <li>Determines proficiency levels across topics</li>
-                  </ul>
-                </CardContent>
-              </Card>
-              <Card className="w-full max-w-md mx-auto">
-                <CardHeader className="text-center">
-                  <CardTitle>Targeted Recommendations</CardTitle>
-                  <CardDescription>Personalized learning resources</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Suggested lessons for weak areas</li>
-                    <li>Curated video tutorials</li>
-                    <li>Interactive practice exercises</li>
-                    <li>Step-by-step problem walkthroughs</li>
-                  </ul>
-                </CardContent>
-              </Card>
-              <Card className="w-full max-w-md mx-auto">
-                <CardHeader className="text-center">
-                  <CardTitle>Progress Tracking</CardTitle>
-                  <CardDescription>Monitor improvement over time</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Save test results and analysis</li>
-                    <li>Track improvement in specific skill areas</li>
-                    <li>Visualize progress with charts and graphs</li>
-                    <li>Set and monitor learning goals</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="flex flex-col items-center text-center">
-              <div className="space-y-2 max-w-3xl">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Ready to Improve Your Math Skills?
-                </h2>
-                <p className="text-muted-foreground md:text-xl/relaxed">
-                  Start your personalized learning journey today.
-                </p>
-              </div>
-              <div className="mt-6 flex flex-col gap-2 min-[400px]:flex-row">
-                <Button asChild size="lg" className="bg-emerald-600 hover:bg-emerald-700">
-                  <Link href="/tests/new">Take a Diagnostic Test</Link>
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/dashboard">View Dashboard</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-      <footer className="w-full border-t">
-        <div className="container mx-auto flex flex-col items-center justify-center gap-4 py-6 md:flex-row md:gap-8">
-          <p className="text-sm text-muted-foreground">
-            © 2025 MathMentor. All rights reserved.
-          </p>
-          <div className="flex gap-4">
-            <Link href="/terms" className="text-sm text-muted-foreground underline-offset-4 hover:underline">
-              Terms
-            </Link>
-            <Link href="/privacy" className="text-sm text-muted-foreground underline-offset-4 hover:underline">
-              Privacy
-            </Link>
-            <Link href="/contact" className="text-sm text-muted-foreground underline-offset-4 hover:underline">
-              Contact
-            </Link>
-          </div>
+            </section>
+
+            {/* Features */}
+            <section className="container mx-auto px-4 py-16">
+                <h2 className="mb-12 text-center text-3xl font-bold text-gray-900">Why Choose QuizAI?</h2>
+                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                    <Card className="text-center">
+                        <CardContent className="p-6">
+                            <Brain className="mx-auto mb-4 h-12 w-12 text-blue-600" />
+                            <h3 className="mb-2 text-xl font-semibold">AI-Generated</h3>
+                            <p className="text-gray-600">Unlimited unique questions generated by advanced AI for any math topic</p>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="text-center">
+                        <CardContent className="p-6">
+                            <TrendingUp className="mx-auto mb-4 h-12 w-12 text-green-600" />
+                            <h3 className="mb-2 text-xl font-semibold">Track Progress</h3>
+                            <p className="text-gray-600">Monitor your learning journey with detailed analytics and insights</p>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="text-center">
+                        <CardContent className="p-6">
+                            <Calculator className="mx-auto mb-4 h-12 w-12 text-purple-600" />
+                            <h3 className="mb-2 text-xl font-semibold">All Topics</h3>
+                            <p className="text-gray-600">From basic arithmetic to advanced calculus - we cover it all</p>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="text-center">
+                        <CardContent className="p-6">
+                            <Users className="mx-auto mb-4 h-12 w-12 text-orange-600" />
+                            <h3 className="mb-2 text-xl font-semibold">Adaptive Learning</h3>
+                            <p className="text-gray-600">Difficulty adjusts to your skill level for optimal learning</p>
+                        </CardContent>
+                    </Card>
+                </div>
+            </section>
+
+            {/* CTA Section */}
+            <section className="bg-blue-600 py-16 text-white">
+                <div className="container mx-auto px-4 text-center">
+                    <h2 className="mb-4 text-3xl font-bold">Ready to Master Math?</h2>
+                    <p className="mb-8 text-xl opacity-90">Join thousands of students improving their math skills with AI</p>
+                    {user ? (
+                        <Button asChild size="lg" variant="secondary" className="px-8 py-3 text-lg">
+                            <Link href="/quizzes/create">Create Your First Quiz</Link>
+                        </Button>
+                    ) : (
+                        <Button asChild size="lg" variant="secondary" className="px-8 py-3 text-lg">
+                            <Link href="/register">Create Your Account</Link>
+                        </Button>
+                    )}
+                </div>
+            </section>
+
+            {/* Footer */}
+            <footer className="bg-gray-900 py-8 text-white">
+                <div className="container mx-auto px-4 text-center">
+                    <div className="mb-4 flex items-center justify-center space-x-2">
+                        <Calculator className="h-6 w-6" />
+                        <span className="text-xl font-bold">MathQuiz AI</span>
+                    </div>
+                    <p className="text-gray-400">© 2024 MathQuiz AI. All rights reserved.</p>
+                </div>
+            </footer>
         </div>
-      </footer>
-    </div>
-  )
+    );
 }

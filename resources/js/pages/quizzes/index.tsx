@@ -55,7 +55,7 @@ export default function Quizzes({ quizzes }) {
                 <div className="flex justify-between">
                     <h1 className="mb-6 text-2xl font-bold">Your Quizzes</h1>
 
-                    <Button asChild size="sm">
+                    <Button asChild>
                         <Link href={route('quizzes.create')}>Create New Quiz</Link>
                     </Button>
                 </div>
@@ -65,7 +65,7 @@ export default function Quizzes({ quizzes }) {
                         <h3 className="mb-2 text-lg font-medium text-gray-900">No quizzes yet</h3>
                         <p className="mb-4 text-gray-600">Start your math journey by creating your first quiz!</p>
 
-                        <Button asChild size="sm">
+                        <Button asChild>
                             <Link href="/quizzes/create">
                                 <Plus className="mr-2 h-4 w-4" />
                                 Create Your First Quiz
@@ -225,7 +225,7 @@ export default function Quizzes({ quizzes }) {
                                             </Dialog>
                                         </>
                                     ) : (
-                                        <Button asChild variant="outline" size="sm">
+                                        <Button asChild size="sm">
                                             <Link href={`/quizzes/${quiz.id}`}>Attempt</Link>
                                         </Button>
                                     )}

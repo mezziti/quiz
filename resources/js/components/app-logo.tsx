@@ -1,13 +1,11 @@
-import AppLogoIcon from './app-logo-icon';
+import { Sparkles } from 'lucide-react';
 
 export default function AppLogo() {
     return (
         <>
-            <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
-                <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
-            </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-none font-semibold">Laravel Starter Kit</span>
+            <div className="my-2 ml-4 flex items-center space-x-2">
+                <Sparkles className="h-6 w-6 text-blue-600" />
+                <div className="text-2xl font-bold text-blue-600">QuizAI</div>
             </div>
         </>
     );
